@@ -45,7 +45,16 @@ namespace :db do
     task :from_local_dump do
       dump_file_location = (ENV['DUMP_FILE'] || "tmp/latest.dump")
       #in backticks so that pg_restore warnings dont exit this routine
-      `pg_restore --verbose --clean --no-acl --no-owner -h localhost -d #{Rails.application.class.parent_name.underscore}_development #{dump_file_location}`
+      `pg_restore --verbose --clean --no-acl --no-owner -h localhost -d #{app_name_from_environment}_development #{dump_file_location}`
     end
+  end
+end
+
+def app_name_from_environment(env)
+  case env.downcase
+  when "production"
+    ENV['HEROKU_APPNAME_PRODUCTION'] || "#{Rails.application.class.parent_name.underscore.gsub('_','-')}-production"
+  when "staging"
+    ENV['HEROKU_APPNAME_STAGING'] || "#{Rails.application.class.parent_name.underscore.gsub('_','-')}-staging"
   end
 end
