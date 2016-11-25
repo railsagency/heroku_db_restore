@@ -45,11 +45,14 @@ namespace :db do
     task :from_local_dump do
       dump_file_location = (ENV['DUMP_FILE'] || "tmp/latest.dump")
       #in backticks so that pg_restore warnings dont exit this routine
-      `pg_restore --verbose --clean --no-acl --no-owner -h localhost -d #{app_name_from_environment}_development #{dump_file_location}`
+      `pg_restore --verbose --clean --no-acl --no-owner -h localhost -d #{local_database_name} #{dump_file_location}`
     end
   end
 end
 
+def local_database_name
+  Rails.configuration.database_configuration[Rails.env]["database"]
+end
 def app_name_from_environment(env)
   case env.downcase
   when "production"
