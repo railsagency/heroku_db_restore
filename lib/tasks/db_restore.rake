@@ -56,7 +56,7 @@ end
 def app_name_from_environment(env)
   case env.downcase
   when "production"
-    ENV['HEROKU_APPNAME_PRODUCTION'] || "#{Rails.application.class.parent_name.underscore.gsub('_','-')}-production"
+    ENV['HEROKU_APPNAME_PRODUCTION'] || "#{Rails.application.class.parent_name.underscore.gsub('_','-')}"
   when "staging"
     ENV['HEROKU_APPNAME_STAGING'] || "#{Rails.application.class.parent_name.underscore.gsub('_','-')}-staging"
   end
