@@ -45,7 +45,7 @@ namespace :db do
     task :from_local_dump do
       dump_file_location = (ENV['DUMP_FILE'] || "tmp/latest.dump")
       #in backticks so that pg_restore warnings dont exit this routine
-      `PGPASSWORD="#{local_database_password}" pg_restore --verbose --clean --no-acl --no-owner -h localhost -d #{local_database_name} -p #{local_database_port} -U #{local_database_user} #{dump_file_location}`
+      `DISABLE_DATABASE_ENVIRONMENT_CHECK=1 PGPASSWORD="#{local_database_password}" pg_restore --verbose --clean --no-acl --no-owner -h localhost -d #{local_database_name} -p #{local_database_port} -U #{local_database_user} #{dump_file_location}`
     end
   end
 end
