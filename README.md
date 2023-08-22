@@ -1,22 +1,13 @@
-# HerokuDbRestore
+# Heroku DB Restore
 
-A (for now) very opinionated gem which has 3 sections:
+A (for now) very opinionated gem makes it super easy to take a backup of a Heroku Postgres database, download it, and restore it.
 
-* pipeline/app setup
-* db restore (pull down your heroku database and `psql < tmp/latest.db`)
-* db_restores (push to heroku remotes)
+This gem looks for two Environment Variables, each representing an app in either `staging` or `production` environments.
 
-These tasks all assume your heroku application names are of the format `"#{Rails.application.class.parent_name.underscore.gsub('_','-')}-#{environment}"`, where environment is one of staging, production. Setting up an app includes the following free Heroku addons:
+  1.  HEROKU_APPNAME_PRODUCTION=my-heroku-app
+  2.  HEROKU_APPNAME_STAGING=my-heroku-app-staging
 
-*heroku-postgresql:hobby-dev
-*newrelic:wayne
-*papertrail:choklad
-*rediscloud:30 
-*scheduler:standard
-*sendgrid:starter
-
-App name configuration flags and more detailed documentation will come in a later version.
-
+Set these in your `.env` file, or however you manage environment variables in your app.  We recommend `dotenv-rails`.
 
 ## Installation
 
@@ -36,7 +27,7 @@ Or install it yourself as:
 
 ## Usage
 To see an updated list of tasks and descriptions:
-`bundle exec rake heroku_db_restore -T heroku_db_restore`
+`bin/rake -T | grep db:restore`
 
 ~~~bash
 rake db:restore                  # Pull Down a copy of the database from the specified heroku environment
@@ -49,7 +40,7 @@ rake db:restore:staging          # Restore a local copy of Heroku's Staging Envi
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/ldstudios/heroku_db_restore.
+Bug reports and pull requests are welcome on GitHub at https://github.com/railsagency/heroku_db_restore.
 
 
 ## License
