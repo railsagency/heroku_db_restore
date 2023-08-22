@@ -31,6 +31,7 @@ namespace :db do
 
     desc "Erase local development and test database and restore from the local dump file."
     task :local do
+      ENV['DISABLE_DATABASE_ENVIRONMENT_CHECK'] = '1'
       #ensures there are no extra tables or views
       Rake::Task["db:drop"].invoke
       Rake::Task["db:create"].invoke
@@ -45,9 +46,13 @@ namespace :db do
     task :from_local_dump do
       dump_file_location = (ENV['DUMP_FILE'] || "tmp/latest.dump")
       #in backticks so that pg_restore warnings dont exit this routine
-      `DISABLE_DATABASE_ENVIRONMENT_CHECK=1 PGPASSWORD="#{local_database_password}" pg_restore --verbose --clean --no-acl --no-owner -h localhost -d #{local_database_name} -p #{local_database_port} -U #{local_database_user} #{dump_file_location}`
+      `DISABLE_DATABASE_ENVIRONMENT_CHECK=1 PGPASSWORD="#{local_database_password}" pg_restore --verbose --clean --no-acl --no-owner -h #{local_database_host} -d #{local_database_name} -p #{local_database_port} -U #{local_database_user} #{dump_file_location}`
     end
   end
+end
+
+def local_database_host
+  Rails.configuration.database_configuration[Rails.env]["host"]
 end
 
 def local_database_name
