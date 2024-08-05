@@ -10,7 +10,7 @@ namespace :db do
       sh "heroku pg:backups capture --app #{app}"
     end
 
-    sh "curl -o tmp/latest.dump `heroku pg:backups public-url --app #{app} | head -n 1`"
+    sh "heroku pg:backups:download --app #{app}"
 
     #ensures there are no extra tables or views
     Rake::Task["db:restore:local"].invoke
