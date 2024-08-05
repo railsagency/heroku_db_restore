@@ -7,7 +7,7 @@ namespace :db do
     app = app_name_from_environment(env)
 
     if ENV['LATEST'] #if this is here, then create a fresh backup, if not grab whichever is the latest
-      sh "heroku pg:backups capture --app #{app}"
+      sh "heroku pg:backups:capture --app #{app}"
     end
 
     sh "heroku pg:backups:download --output=tmp/latest.dump --app #{app}"
